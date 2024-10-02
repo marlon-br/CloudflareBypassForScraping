@@ -5,6 +5,8 @@ import sentry_sdk
 from DrissionPage import ChromiumPage
 from DrissionPage.common import Actions
 
+
+
 sentry_sdk.init(
     dsn="https://cc4e60334ff64cd05f9886866692866b@o4507985422778368.ingest.de.sentry.io/4507985427365968",
     # Set traces_sample_rate to 1.0 to capture 100%

@@ -1,3 +1,4 @@
+import logging
 import os
 import random
 import time
@@ -6,6 +7,9 @@ from typing import Optional
 
 import pyautogui
 from DrissionPage import ChromiumOptions, ChromiumPage
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class CloudflareBypass:
     def __init__(
@@ -127,6 +131,9 @@ class CloudflareBypass:
             #    没有找到元素。
             #    method: ele()
             #    args: {'locator': 'Verify you are human', 'index': 1}
+
+            logger.info(f"Exception {e}")
+
             self.page.refresh()
             time.sleep(5)
 
