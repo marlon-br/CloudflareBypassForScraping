@@ -10,6 +10,8 @@ from pydantic import BaseModel
 from typing import Dict
 import argparse
 
+from cloudflare_bypass import CloudflareBypass
+
 # Check if running in Docker mode
 DOCKER_MODE = os.getenv("DOCKERMODE", "false").lower() == "true"
 
@@ -75,9 +77,9 @@ def bypass_cloudflare(url: str, retries: int, log: bool) -> ChromiumPage:
     driver = ChromiumPage(addr_or_opts=options)
     try:
         driver.get(url)
-        cf_bypasser = CloudflareBypasser(driver, retries, log)
+        cf_bypasser = CloudflareBypass()
         driver.wait.eles_loaded("tag:input")
-        cf_bypasser.bypass()
+        cf_bypasser.bypass(url)
         return driver
     except Exception as e:
         driver.quit()
