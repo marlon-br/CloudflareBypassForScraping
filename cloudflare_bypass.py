@@ -121,11 +121,11 @@ class CloudflareBypass:
 
 
         try:
-            wrapper = self.page.ele(".cf-turnstile-wrapper")
-            shadow_root = wrapper.shadow_root
-            iframe = shadow_root.ele("tag=iframe", timeout=15)
-            verify_element = iframe.ele("Verify you are human", timeout=25)
-            time.sleep(random.uniform(2, 5))
+            # wrapper = self.page.ele(".cf-turnstile-wrapper")
+            # shadow_root = wrapper.shadow_root
+            # iframe = shadow_root.ele("tag=iframe", timeout=15)
+            # verify_element = iframe.ele("Verify you are human", timeout=25)
+            # time.sleep(random.uniform(2, 5))
 
             button = self.locate_cf_button()
 
