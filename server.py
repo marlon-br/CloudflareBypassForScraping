@@ -58,21 +58,26 @@ def is_safe_url(url: str) -> bool:
 def bypass_cloudflare(url: str, retries: int, log: bool) -> ChromiumPage:
     from pyvirtualdisplay import Display
 
-    if DOCKER_MODE:
-        # Start Xvfb for Docker
-        display = Display(visible=0, size=(1920, 1080))
-        display.start()
+    # Start Xvfb for Docker
+    xvfb_display = Display(
+        backend="xvfb",
+        visible=True,
+        size=(1920, 1080),
+        use_xauth=True,
+    )
+    xvfb_display.start()
+    print(f"DISPLAY={os.getenv('DISPLAY')}")
 
-        options = ChromiumOptions()
-        options.set_argument("--auto-open-devtools-for-tabs", "true")
-        options.set_argument("--remote-debugging-port=9222")
-        options.set_argument("--no-sandbox")  # Necessary for Docker
-        options.set_argument("--disable-gpu")  # Optional, helps in some cases
-        options.set_paths(browser_path=browser_path).headless(False)
-    else:
-        options = ChromiumOptions()
-        options.set_argument("--auto-open-devtools-for-tabs", "true")
-        options.set_paths(browser_path=browser_path).headless(False)
+    # display = Display(visible=0, size=(1920, 1080))
+    # display.start()
+
+    options = ChromiumOptions()
+    options.set_argument("--auto-open-devtools-for-tabs", "true")
+    options.set_argument("--remote-debugging-port=9222")
+    options.set_argument("--no-sandbox")  # Necessary for Docker
+    options.set_argument("--disable-gpu")  # Optional, helps in some cases
+    options.set_paths(browser_path=browser_path).headless(False)
+
 
     driver = ChromiumPage(addr_or_opts=options)
     try:
