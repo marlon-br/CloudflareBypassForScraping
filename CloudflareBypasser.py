@@ -1,4 +1,6 @@
 import time
+
+import pyautogui as pyautogui
 import sentry_sdk
 from DrissionPage import ChromiumPage
 from DrissionPage.common import Actions
@@ -79,7 +81,7 @@ class CloudflareBypasser:
             #     self.log_message("Verification button not found")
 
             wrapper = self.driver.ele(".main-content")
-            spacer = wrapper.ele(".spacer")
+            spacer = wrapper.ele("#JStsl2")
             div1 = spacer.ele("tag:div")
             div2 = div1.ele("tag:div")
 
