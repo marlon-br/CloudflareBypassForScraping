@@ -10,6 +10,18 @@ from pydantic import BaseModel
 from typing import Dict
 import argparse
 
+from pyvirtualdisplay import Display
+
+# Start Xvfb for Docker
+xvfb_display = Display(
+    backend="xvfb",
+    visible=True,
+    size=(1920, 1080),
+    use_xauth=True,
+)
+xvfb_display.start()
+print(f"DISPLAY={os.getenv('DISPLAY')}")
+
 from cloudflare_bypass import CloudflareBypass
 
 # Check if running in Docker mode
@@ -56,17 +68,7 @@ def is_safe_url(url: str) -> bool:
 
 # Function to bypass Cloudflare protection
 def bypass_cloudflare(url: str, retries: int, log: bool) -> ChromiumPage:
-    from pyvirtualdisplay import Display
 
-    # Start Xvfb for Docker
-    xvfb_display = Display(
-        backend="xvfb",
-        visible=True,
-        size=(1920, 1080),
-        use_xauth=True,
-    )
-    xvfb_display.start()
-    print(f"DISPLAY={os.getenv('DISPLAY')}")
 
     # display = Display(visible=0, size=(1920, 1080))
     # display.start()
