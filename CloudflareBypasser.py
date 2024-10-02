@@ -74,12 +74,15 @@ class CloudflareBypasser:
             if self.driver.wait.ele_displayed('#GBddK6', timeout=1.5):
                 self.log_message("Verification button found. Attempting to interact.")
                 self.actions.move_to("#GBddK6", duration=0.5).left(120).hold().wait(0.01, 0.15).release()
+            else:
+                self.log_message("Verification button not found")
         except Exception as e:
             self.log_message(f"Error interacting with verification button: {e}")
 
         except Exception as e:
             self.log_message(f"Error clicking verification button: {e}")
 
+        self.log_message("Sending screen")
         self.driver.get_screenshot(path="screenshot.png")
 
         scope = sentry_sdk.get_current_scope()
