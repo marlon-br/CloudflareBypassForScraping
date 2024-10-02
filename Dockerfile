@@ -58,5 +58,7 @@ EXPOSE 9222
 # Expose the port for the FastAPI server
 EXPOSE 8000
 
+ENV DISPLAY=:99
+
 # Default command
 CMD ["python3", "server.py"]
