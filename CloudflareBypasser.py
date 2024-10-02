@@ -71,9 +71,9 @@ class CloudflareBypasser:
 
     def click_verification_button(self):
         try:
-            if self.page.wait.ele_displayed('.spacer', timeout=1.5):
+            if self.driver.wait.ele_displayed('.spacer', timeout=1.5):
                 time.sleep(1.5)
-                self.page.ele(".spacer", timeout=2.5).click()
+                self.driver.ele(".spacer", timeout=2.5).click()
             else:
                 self.log_message("Verification button not found")
         except Exception as e:
