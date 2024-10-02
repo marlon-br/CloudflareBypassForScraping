@@ -68,7 +68,9 @@ class CloudflareBypass:
 
     def bypass(self, url: str):
         self.page.set.cookies.clear()
-        self.page.get(url)
+       # self.page.get(url)
+
+        self.page.get("https://whatismyipaddress.com/")
 
         logger.info(f"self.page.get(url)")
         check_count = 0
@@ -221,7 +223,7 @@ class CloudflareBypass:
             #
             # self.page.wait.load_start(timeout=20)
 
-            self.page.get("https://whatismyipaddress.com/")
+          #  self.page.get("https://whatismyipaddress.com/")
 
             self.page.get_screenshot(path="screenshot.png")
 
