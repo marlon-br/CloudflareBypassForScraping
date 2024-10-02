@@ -94,6 +94,7 @@ def bypass_cloudflare(url: str, retries: int, log: bool) -> ChromiumPage:
         cf_bypasser.bypass(url)
         return cf_bypasser.page
     except Exception as e:
+        logger.info(f"Exception cf_bypasser = CloudflareBypass {e}")
         cf_bypasser.page.quit()
      #   if DOCKER_MODE:
      #       display.stop()  # Stop Xvfb
