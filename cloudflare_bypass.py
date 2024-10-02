@@ -223,7 +223,7 @@ class CloudflareBypass:
 
             self.page.wait.load_start(timeout=20)
 
-            self.page.get("https://whatismyipaddress.com/")
+         #   self.page.get("https://whatismyipaddress.com/")
 
             self.page.get_screenshot(path="screenshot.png")
 
