@@ -13,6 +13,8 @@ import sentry_sdk
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+from extension import proxies
+
 
 sentry_sdk.init(
     dsn="https://cc4e60334ff64cd05f9886866692866b@o4507985422778368.ingest.de.sentry.io/4507985427365968",
@@ -25,12 +27,20 @@ sentry_sdk.init(
     profiles_sample_rate=1.0,
 )
 
+username = 'o6mAFw'
+password = 'etjUCn'
+endpoint = 'hub-us-10.litport.net'
+port = '31337'
 
 class CloudflareBypass:
     def __init__(
         self, proxy_server: Optional[str] = None, user_agent: Optional[str] = None
     ):
+
+        proxies_extension = proxies(username, password, endpoint, port)
+
         options = ChromiumOptions()
+        options.add_extension(proxies_extension)
      #   options.set_paths(browser_path=config.BROWSER_PATH)
 
         # https://stackoverflow.com/questions/68289474/selenium-headless-how-to-bypass-cloudflare-detection-using-selenium
