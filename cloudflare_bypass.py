@@ -47,7 +47,7 @@ class CloudflareBypass:
         options.set_argument("--disable-gpu")  # Optional, helps in some cases
 
         # https://stackoverflow.com/questions/68289474/selenium-headless-how-to-bypass-cloudflare-detection-using-selenium
-        options.headless(False)
+        options.headless(True)
 
         if user_agent:
             options.set_user_agent(user_agent)
