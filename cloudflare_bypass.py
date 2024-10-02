@@ -184,9 +184,21 @@ class CloudflareBypass:
                 click_x, click_y, duration=0.5, tween=pyautogui.easeInElastic
             )
 
+            pyautogui.moveTo(
+                click_x * 2, click_y * 2, duration=1, tween=pyautogui.easeInElastic
+            )
+
+            pyautogui.moveTo(
+                click_x * 3, click_y, duration=0.5, tween=pyautogui.easeInElastic
+            )
+
             logger.info(f"pyautogui.click() ++++ ")
 
             pyautogui.click()
+
+            pyautogui.moveTo(
+                click_x * 8, click_y * 2, duration=1, tween=pyautogui.easeInElastic
+            )
 
             logger.info(f"pyautogui.click() ---- ")
 
