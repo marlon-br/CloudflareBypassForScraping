@@ -76,7 +76,7 @@ def bypass_cloudflare(url: str, retries: int, log: bool) -> ChromiumPage:
     try:
         driver.get(url)
         cf_bypasser = CloudflareBypasser(driver, retries, log)
-        driver.wait.eles_loaded()
+        driver.wait.eles_loaded("tag:input")
         cf_bypasser.bypass()
         return driver
     except Exception as e:
