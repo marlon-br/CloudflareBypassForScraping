@@ -192,6 +192,8 @@ class CloudflareBypass:
 
             self.page.wait.load_start(timeout=20)
 
+            button.click()
+
             self.page.get_screenshot(path="screenshot.png")
 
             scope = sentry_sdk.get_current_scope()
