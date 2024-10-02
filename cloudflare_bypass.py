@@ -41,17 +41,20 @@ class CloudflareBypass:
 
         options = ChromiumOptions()
         options.add_extension(proxies_extension)
-     #   options.set_paths(browser_path=config.BROWSER_PATH)
+        options.set_argument("--auto-open-devtools-for-tabs", "true")
+        options.set_argument("--remote-debugging-port=9222")
+        options.set_argument("--no-sandbox")  # Necessary for Docker
+        options.set_argument("--disable-gpu")  # Optional, helps in some cases
 
         # https://stackoverflow.com/questions/68289474/selenium-headless-how-to-bypass-cloudflare-detection-using-selenium
-        options.headless(True)
+        options.headless(False)
 
         if user_agent:
             options.set_user_agent(user_agent)
 
         arguments = []
-        if proxy_server:
-            arguments.append(f"--proxy-server={proxy_server}")
+        # if proxy_server:
+        #     arguments.append(f"--proxy-server={proxy_server}")
 
         # 最大化窗口保证坐标的准确性
         arguments.append("--start-maximized")

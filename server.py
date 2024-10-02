@@ -77,27 +77,27 @@ def bypass_cloudflare(url: str, retries: int, log: bool) -> ChromiumPage:
     # display = Display(visible=0, size=(1920, 1080))
     # display.start()
 
-    options = ChromiumOptions()
-    options.set_argument("--auto-open-devtools-for-tabs", "true")
-    options.set_argument("--remote-debugging-port=9222")
-    options.set_argument("--no-sandbox")  # Necessary for Docker
-    options.set_argument("--disable-gpu")  # Optional, helps in some cases
-    options.set_paths(browser_path=browser_path).headless(False)
+    # options = ChromiumOptions()
+    # options.set_argument("--auto-open-devtools-for-tabs", "true")
+    # options.set_argument("--remote-debugging-port=9222")
+    # options.set_argument("--no-sandbox")  # Necessary for Docker
+    # options.set_argument("--disable-gpu")  # Optional, helps in some cases
+    # options.set_paths(browser_path=browser_path).headless(False)
 
 
-    driver = ChromiumPage(addr_or_opts=options)
+  #  driver = ChromiumPage(addr_or_opts=options)
     try:
-        driver.get(url)
+     #   driver.get(url)
         cf_bypasser = CloudflareBypass(user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36")
-        driver.wait.eles_loaded("tag:input")
+      #  driver.wait.eles_loaded("tag:input")
         logger.info(f"Exception driver.wait.eles_loaded()")
         cf_bypasser.bypass(url)
-        return driver
+        return cf_bypasser.page
     except Exception as e:
-        driver.quit()
-        if DOCKER_MODE:
-            display.stop()  # Stop Xvfb
-        raise e
+        cf_bypasser.page.quit()
+     #   if DOCKER_MODE:
+     #       display.stop()  # Stop Xvfb
+     #   raise e
 
 
 # Endpoint to get cookies
