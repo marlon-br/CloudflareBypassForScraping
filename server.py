@@ -12,6 +12,10 @@ import argparse
 
 from pyvirtualdisplay import Display
 
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 # Start Xvfb for Docker
 xvfb_display = Display(
     backend="xvfb",
@@ -86,6 +90,7 @@ def bypass_cloudflare(url: str, retries: int, log: bool) -> ChromiumPage:
         driver.get(url)
         cf_bypasser = CloudflareBypass()
         driver.wait.eles_loaded("tag:input")
+        logger.info(f"Exception driver.wait.eles_loaded()")
         cf_bypasser.bypass(url)
         return driver
     except Exception as e:
@@ -138,10 +143,11 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     if args.headless and not DOCKER_MODE:
-        from pyvirtualdisplay import Display
-
-        display = Display(visible=0, size=(1920, 1080))
-        display.start()
+        pass
+        # from pyvirtualdisplay import Display
+        #
+        # display = Display(visible=0, size=(1920, 1080))
+        # display.start()
     if args.nolog:
         log = False
     else:

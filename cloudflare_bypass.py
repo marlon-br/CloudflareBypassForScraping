@@ -42,6 +42,7 @@ class CloudflareBypass:
         self.page.set.cookies.clear()
         self.page.get(url)
 
+        logger.info(f"self.page.get(url)")
         check_count = 0
         while True:
             print(self.page.cookies())
@@ -85,6 +86,10 @@ class CloudflareBypass:
             return button
 
     def try_to_click_challenge(self):
+
+        logger.info(f"try_to_click_challenge")
+
+
         try:
             # wrapper = self.page.ele(".cf-turnstile-wrapper")
             # shadow_root = wrapper.shadow_root
@@ -93,6 +98,8 @@ class CloudflareBypass:
             # time.sleep(random.uniform(2, 5))
 
             button = self.locate_cf_button()
+
+            logger.info(f"button {button}")
 
             # 2024-07-05
             # 直接在element上执行click(通过CDP协议)无法通过cloudflare challenge
@@ -142,10 +149,18 @@ class CloudflareBypass:
                 screen_y + page_y + offset_y,
             )
 
+            logger.info(f"click_x, click_y")
+
             pyautogui.moveTo(
                 click_x, click_y, duration=0.5, tween=pyautogui.easeInElastic
             )
+
+            logger.info(f"pyautogui.click() ++++ ")
+
             pyautogui.click()
+
+            logger.info(f"pyautogui.click() ---- ")
+
             self.page.wait.load_start(timeout=20)
         except Exception as e:
             # 2025-05-26
