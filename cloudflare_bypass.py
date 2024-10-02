@@ -106,13 +106,13 @@ class CloudflareBypass:
             return button
         else:
             # If the button is not found, search it recursively
-            self.log_message("Basic search failed. Searching for button recursively.")
+            logger.info("Basic search failed. Searching for button recursively.")
             ele = self.page.ele("tag:body")
             iframe = self.search_recursively_shadow_root_with_iframe(ele)
             if iframe:
                 button = self.search_recursively_shadow_root_with_cf_input(iframe("tag:body"))
             else:
-                self.log_message("Iframe not found. Button search failed.")
+                logger.info("Iframe not found. Button search failed.")
             return button
 
     def try_to_click_challenge(self):
