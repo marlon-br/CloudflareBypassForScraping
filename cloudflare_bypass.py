@@ -37,10 +37,10 @@ class CloudflareBypass:
         self, proxy_server: Optional[str] = None, user_agent: Optional[str] = None
     ):
 
-        proxies_extension = proxies(username, password, endpoint, port)
+      #  proxies_extension = proxies(username, password, endpoint, port)
 
         options = ChromiumOptions()
-        options.add_extension(proxies_extension)
+        options.add_extension("proxies_extension")
         options.set_argument("--auto-open-devtools-for-tabs", "true")
         options.set_argument("--remote-debugging-port=9222")
         options.set_argument("--no-sandbox")  # Necessary for Docker
@@ -63,7 +63,7 @@ class CloudflareBypass:
         for argument in arguments:
             options.set_argument(argument)
 
-        self.page = ChromiumPage(addr_or_opts=options)
+        self.page = ChromiumPage(service=Service(ChromeDriverManager().install()), addr_or_opts=options)
         print(self.page.user_agent)
 
     def bypass(self, url: str):
