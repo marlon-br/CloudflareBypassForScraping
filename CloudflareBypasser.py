@@ -1,6 +1,7 @@
 import time
 import sentry_sdk
 from DrissionPage import ChromiumPage
+from DrissionPage.common import Actions
 
 sentry_sdk.init(
     dsn="https://cc4e60334ff64cd05f9886866692866b@o4507985422778368.ingest.de.sentry.io/4507985427365968",
@@ -18,6 +19,7 @@ class CloudflareBypasser:
         self.driver = driver
         self.max_retries = max_retries
         self.log = log
+        self.actions = Actions(self.driver)
 
     def search_recursively_shadow_root_with_iframe(self,ele):
         if ele.shadow_root:
@@ -69,12 +71,11 @@ class CloudflareBypasser:
 
     def click_verification_button(self):
         try:
-            button = self.locate_cf_button()
-            if button:
-                self.log_message("Verification button found. Attempting to click.")
-                button.click()
-            else:
-                self.log_message("Verification button not found.")
+            if self.driver.wait.ele_displayed('#GBddK6', timeout=1.5):
+                self.log_message("Verification button found. Attempting to interact.")
+                self.actions.move_to("#GBddK6", duration=0.5).left(120).hold().wait(0.01, 0.15).release()
+        except Exception as e:
+            self.log_message(f"Error interacting with verification button: {e}")
 
         except Exception as e:
             self.log_message(f"Error clicking verification button: {e}")
