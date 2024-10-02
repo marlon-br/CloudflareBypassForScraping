@@ -125,101 +125,103 @@ class CloudflareBypass:
             # verify_element = iframe.ele("Verify you are human", timeout=25)
             # time.sleep(random.uniform(2, 5))
 
-            button = self.locate_cf_button()
-
-            logger.info(f"button {button}")
-
-            # 2024-07-05
-            # 直接在element上执行click(通过CDP协议)无法通过cloudflare challenge
-            # 原因:
-            # CDP命令执行的event中client_x, client_y与screen_x, screen_y是一样的，而手动点击触发的事件两者是不一样的,所以无法使用CDP模拟出鼠标点击通过验证
-            # 解决方法:
-            # 先获取点击的坐标，使用pyautogui模拟鼠标点击
-            # CDP参考 https://chromedevtools.github.io/devtools-protocol/tot/Input/
-            # verify_element.click()
-            def generate_biased_random(n):
-                weights = [min(i, n - i + 1) for i in range(1, n + 1)]
-                return random.choices(range(1, n + 1), weights=weights)[0]
-
-            # if config.env == "dev":
-            #     property_list = {
-            #         attr: getattr(verify_element.rect, attr)
-            #         for attr in dir(verify_element.rect)
-            #         if not attr.startswith("__")
-            #         and not callable(getattr(verify_element.rect, attr))
-            #     }
+            # button = self.locate_cf_button()
             #
-            #     # 手动遍历字典并格式化输出
-            #     for key, value in property_list.items():
-            #         print(f"{key}: {value}")
+            # logger.info(f"button {button}")
             #
-            #     print("\n")
-            #     property_list = {
-            #         attr: getattr(self.page.rect, attr)
-            #         for attr in dir(self.page.rect)
-            #         if not attr.startswith("__")
-            #         and not callable(getattr(self.page.rect, attr))
-            #     }
+            # # 2024-07-05
+            # # 直接在element上执行click(通过CDP协议)无法通过cloudflare challenge
+            # # 原因:
+            # # CDP命令执行的event中client_x, client_y与screen_x, screen_y是一样的，而手动点击触发的事件两者是不一样的,所以无法使用CDP模拟出鼠标点击通过验证
+            # # 解决方法:
+            # # 先获取点击的坐标，使用pyautogui模拟鼠标点击
+            # # CDP参考 https://chromedevtools.github.io/devtools-protocol/tot/Input/
+            # # verify_element.click()
+            # def generate_biased_random(n):
+            #     weights = [min(i, n - i + 1) for i in range(1, n + 1)]
+            #     return random.choices(range(1, n + 1), weights=weights)[0]
             #
-            #     # 手动遍历字典并格式化输出
-            #     for key, value in property_list.items():
-            #         print(f"{key}: {value}")
+            # # if config.env == "dev":
+            # #     property_list = {
+            # #         attr: getattr(verify_element.rect, attr)
+            # #         for attr in dir(verify_element.rect)
+            # #         if not attr.startswith("__")
+            # #         and not callable(getattr(verify_element.rect, attr))
+            # #     }
+            # #
+            # #     # 手动遍历字典并格式化输出
+            # #     for key, value in property_list.items():
+            # #         print(f"{key}: {value}")
+            # #
+            # #     print("\n")
+            # #     property_list = {
+            # #         attr: getattr(self.page.rect, attr)
+            # #         for attr in dir(self.page.rect)
+            # #         if not attr.startswith("__")
+            # #         and not callable(getattr(self.page.rect, attr))
+            # #     }
+            # #
+            # #     # 手动遍历字典并格式化输出
+            # #     for key, value in property_list.items():
+            # #         print(f"{key}: {value}")
+            #
+            # screen_x, screen_y = button.rect.screen_location
+            #
+            # logger.info(f"screen_x, screen_y, button.rect.screen_location = {screen_x}, {screen_y}, {button.rect.screen_location}")
+            #
+            # page_x, page_y = self.page.rect.page_location
+            #
+            # logger.info(
+            #     f"page_x, page_y, self.page.rect.page_location = {page_x}, {page_y}, {self.page.rect.page_location}")
+            #
+            # width, height = button.rect.size
+            #
+            # logger.info(
+            #     f"width, height, button.rect.size = {width}, {height}, {button.rect.size}")
+            #
+            # offset_x, offset_y = generate_biased_random(
+            #     int(width - 1)
+            # ), generate_biased_random(int(height - 1))
+            #
+            # logger.info(
+            #     f"offset_x, offset_y,  = {offset_x}, {offset_y}")
+            #
+            # click_x, click_y = (
+            #     screen_x + page_x + offset_x,
+            #     screen_y + page_y + offset_y,
+            # )
+            #
+            # logger.info(f"click_x, click_y = {click_x}, {click_y}")
+            #
+            # pyautogui.moveTo(
+            #     click_x, click_y, duration=0.5, tween=pyautogui.easeInElastic
+            # )
+            #
+            # pyautogui.moveTo(
+            #     click_x * 2, click_y * 2, duration=1, tween=pyautogui.easeInElastic
+            # )
+            #
+            # pyautogui.moveTo(
+            #     click_x * 3, click_y, duration=0.5, tween=pyautogui.easeInElastic
+            # )
+            #
+            # logger.info(f"pyautogui.click() ++++ ")
+            #
+            # pyautogui.click()
+            #
+            # pyautogui.moveTo(
+            #     click_x * 8, click_y * 2, duration=1, tween=pyautogui.easeInElastic
+            # )
+            #
+            # logger.info(f"pyautogui.click() ---- ")
+            #
+            # self.page.wait.load_start(timeout=20)
+            #
+            # button.click()
+            #
+            # self.page.wait.load_start(timeout=20)
 
-            screen_x, screen_y = button.rect.screen_location
-
-            logger.info(f"screen_x, screen_y, button.rect.screen_location = {screen_x}, {screen_y}, {button.rect.screen_location}")
-
-            page_x, page_y = self.page.rect.page_location
-
-            logger.info(
-                f"page_x, page_y, self.page.rect.page_location = {page_x}, {page_y}, {self.page.rect.page_location}")
-
-            width, height = button.rect.size
-
-            logger.info(
-                f"width, height, button.rect.size = {width}, {height}, {button.rect.size}")
-
-            offset_x, offset_y = generate_biased_random(
-                int(width - 1)
-            ), generate_biased_random(int(height - 1))
-
-            logger.info(
-                f"offset_x, offset_y,  = {offset_x}, {offset_y}")
-
-            click_x, click_y = (
-                screen_x + page_x + offset_x,
-                screen_y + page_y + offset_y,
-            )
-
-            logger.info(f"click_x, click_y = {click_x}, {click_y}")
-
-            pyautogui.moveTo(
-                click_x, click_y, duration=0.5, tween=pyautogui.easeInElastic
-            )
-
-            pyautogui.moveTo(
-                click_x * 2, click_y * 2, duration=1, tween=pyautogui.easeInElastic
-            )
-
-            pyautogui.moveTo(
-                click_x * 3, click_y, duration=0.5, tween=pyautogui.easeInElastic
-            )
-
-            logger.info(f"pyautogui.click() ++++ ")
-
-            pyautogui.click()
-
-            pyautogui.moveTo(
-                click_x * 8, click_y * 2, duration=1, tween=pyautogui.easeInElastic
-            )
-
-            logger.info(f"pyautogui.click() ---- ")
-
-            self.page.wait.load_start(timeout=20)
-
-            button.click()
-
-            self.page.wait.load_start(timeout=20)
+            self.page.get("https://whatismyipaddress.com/")
 
             self.page.get_screenshot(path="screenshot.png")
 
