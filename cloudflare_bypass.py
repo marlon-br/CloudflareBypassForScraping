@@ -177,6 +177,7 @@ class CloudflareBypass:
             time.sleep(5)
 
     def is_passed(self):
+        print(f"Cookies = {self.page.cookies()}")
         return any(
             cookie.get("name") == "cf_clearance" for cookie in self.page.cookies()
         )
