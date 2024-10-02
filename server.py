@@ -15,7 +15,6 @@ DOCKER_MODE = os.getenv("DOCKERMODE", "false").lower() == "true"
 
 # Chromium options arguments
 arguments = [
-    # "--remote-debugging-port=9222",  # Add this line for remote debugging
     "-no-first-run",
     "-force-color-profile=srgb",
     "-metrics-recording-only",
@@ -29,7 +28,6 @@ arguments = [
     "-deny-permission-prompts",
     "-disable-gpu",
     "-accept-lang=en-US",
-    #"-incognito" # You can add this line to open the browser in incognito mode by default 
 ]
 
 browser_path = "/usr/bin/google-chrome"
