@@ -62,13 +62,37 @@ class CloudflareBypass:
 
         return self.page.cookies(all_info=True)
 
+    def locate_cf_button(self):
+        button = None
+        eles = self.page.eles("tag:input")
+        for ele in eles:
+            if "name" in ele.attrs.keys() and "type" in ele.attrs.keys():
+                if "turnstile" in ele.attrs["name"] and ele.attrs["type"] == "hidden":
+                    button = ele.parent().shadow_root.child()("tag:body").shadow_root("tag:input")
+                    break
+
+        if button:
+            return button
+        else:
+            # If the button is not found, search it recursively
+            self.log_message("Basic search failed. Searching for button recursively.")
+            ele = self.page.ele("tag:body")
+            iframe = self.search_recursively_shadow_root_with_iframe(ele)
+            if iframe:
+                button = self.search_recursively_shadow_root_with_cf_input(iframe("tag:body"))
+            else:
+                self.log_message("Iframe not found. Button search failed.")
+            return button
+
     def try_to_click_challenge(self):
         try:
-            wrapper = self.page.ele(".cf-turnstile-wrapper")
-            shadow_root = wrapper.shadow_root
-            iframe = shadow_root.ele("tag=iframe", timeout=15)
-            verify_element = iframe.ele("Verify you are human", timeout=25)
-            time.sleep(random.uniform(2, 5))
+            # wrapper = self.page.ele(".cf-turnstile-wrapper")
+            # shadow_root = wrapper.shadow_root
+            # iframe = shadow_root.ele("tag=iframe", timeout=15)
+            # verify_element = iframe.ele("Verify you are human", timeout=25)
+            # time.sleep(random.uniform(2, 5))
+
+            button = self.locate_cf_button()
 
             # 2024-07-05
             # 直接在element上执行click(通过CDP协议)无法通过cloudflare challenge
@@ -106,9 +130,9 @@ class CloudflareBypass:
             #     for key, value in property_list.items():
             #         print(f"{key}: {value}")
 
-            screen_x, screen_y = verify_element.rect.screen_location
+            screen_x, screen_y = button.rect.screen_location
             page_x, page_y = self.page.rect.page_location
-            width, height = verify_element.rect.size
+            width, height = button.rect.size
             offset_x, offset_y = generate_biased_random(
                 int(width - 1)
             ), generate_biased_random(int(height - 1))
