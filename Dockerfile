@@ -48,6 +48,8 @@ WORKDIR /app
 # Copy application files
 COPY . .
 
+RUN apt-get update && apt-get install -y python3-tk python3-dev
+
 # Install Python dependencies
 RUN pip3 install -r requirements.txt
 RUN pip3 install -r server_requirements.txt
