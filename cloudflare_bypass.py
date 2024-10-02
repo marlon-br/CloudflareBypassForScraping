@@ -153,18 +153,32 @@ class CloudflareBypass:
             #         print(f"{key}: {value}")
 
             screen_x, screen_y = button.rect.screen_location
+
+            logger.info(f"screen_x, screen_y, button.rect.screen_location = {screen_x}, {screen_y}, {button.rect.screen_location}")
+
             page_x, page_y = self.page.rect.page_location
+
+            logger.info(
+                f"page_x, page_y, self.page.rect.page_location = {page_x}, {page_y}, {self.page.rect.page_location}")
+
             width, height = button.rect.size
+
+            logger.info(
+                f"width, height, button.rect.size = {width}, {height}, {button.rect.size}")
+
             offset_x, offset_y = generate_biased_random(
                 int(width - 1)
             ), generate_biased_random(int(height - 1))
+
+            logger.info(
+                f"offset_x, offset_y,  = {offset_x}, {offset_y}")
 
             click_x, click_y = (
                 screen_x + page_x + offset_x,
                 screen_y + page_y + offset_y,
             )
 
-            logger.info(f"click_x, click_y")
+            logger.info(f"click_x, click_y = {click_x}, {click_y}")
 
             pyautogui.moveTo(
                 click_x, click_y, duration=0.5, tween=pyautogui.easeInElastic
