@@ -63,7 +63,7 @@ class CloudflareBypass:
         for argument in arguments:
             options.set_argument(argument)
 
-        self.page = ChromiumPage(service=Service(ChromeDriverManager().install()), addr_or_opts=options)
+        self.page = ChromiumPage(addr_or_opts=options)
         print(self.page.user_agent)
 
     def bypass(self, url: str):
