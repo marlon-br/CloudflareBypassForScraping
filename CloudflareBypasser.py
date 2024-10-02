@@ -71,12 +71,34 @@ class CloudflareBypasser:
 
     def click_verification_button(self):
         try:
-            button = self.locate_cf_button()
-            if button:
-                self.log_message("Verification button found. Attempting to click.")
-                button.click()
-            else:
-                self.log_message("Verification button not found")
+            # button = self.locate_cf_button()
+            # if button:
+            #     self.log_message("Verification button found. Attempting to click.")
+            #     button.click()
+            # else:
+            #     self.log_message("Verification button not found")
+
+            wrapper = self.driver.ele(".main-content")
+            spacer = wrapper.ele(".spacer")
+            div1 = spacer.ele("tag:div")
+            div2 = div1.ele("tag:div")
+
+            iframe = div2.shadow_root.ele("tag:iframe", timeout=15)
+            self.driver.wait(2)
+            iframeRoot = iframe("tag:body").shadow_root
+            cbLb = iframeRoot.ele(".cb-lb", timeout=10)
+
+            # 获取位置
+            pos = cbLb.ele("tag:input", timeout=10).rect.screen_click_point
+
+            self.driver.wait(2)
+
+            # 移动鼠标
+            pyautogui.moveTo(pos[0], pos[1] + 61, duration=0.5)
+            # 点击右键
+            pyautogui.click()
+
+
         except Exception as e:
             self.log_message(f"Error interacting with verification button: {e}")
 
