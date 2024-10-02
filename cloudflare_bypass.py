@@ -8,8 +8,23 @@ from typing import Optional
 import pyautogui
 from DrissionPage import ChromiumOptions, ChromiumPage
 
+import sentry_sdk
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+sentry_sdk.init(
+    dsn="https://cc4e60334ff64cd05f9886866692866b@o4507985422778368.ingest.de.sentry.io/4507985427365968",
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for tracing.
+    traces_sample_rate=1.0,
+    # Set profiles_sample_rate to 1.0 to profile 100%
+    # of sampled transactions.
+    # We recommend adjusting this value in production.
+    profiles_sample_rate=1.0,
+)
+
 
 class CloudflareBypass:
     def __init__(
@@ -162,6 +177,13 @@ class CloudflareBypass:
             logger.info(f"pyautogui.click() ---- ")
 
             self.page.wait.load_start(timeout=20)
+
+            self.page.get_screenshot(path="screenshot.png")
+
+            scope = sentry_sdk.get_current_scope()
+            scope.add_attachment(path="screenshot.png", content_type="image/png", add_to_transactions=True)
+            sentry_sdk.capture_message("cloadflare_bypass", level="error")
+
         except Exception as e:
             # 2025-05-26
             # 有时会出现错误，重试能解决一部分问题
