@@ -88,7 +88,7 @@ def bypass_cloudflare(url: str, retries: int, log: bool) -> ChromiumPage:
     driver = ChromiumPage(addr_or_opts=options)
     try:
         driver.get(url)
-        cf_bypasser = CloudflareBypass()
+        cf_bypasser = CloudflareBypass(user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36")
         driver.wait.eles_loaded("tag:input")
         logger.info(f"Exception driver.wait.eles_loaded()")
         cf_bypasser.bypass(url)
