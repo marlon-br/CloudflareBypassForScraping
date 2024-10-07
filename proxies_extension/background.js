@@ -4,8 +4,8 @@
             rules: {
               singleProxy: {
                 scheme: "http",
-                host: "hub-us-10.litport.net",
-                port: parseInt(31337)
+                host: "103.163.53.14",
+                port: parseInt(64358)
               },
               bypassList: ["localhost"]
             }
@@ -16,8 +16,8 @@
     function callbackFn(details) {
         return {
             authCredentials: {
-                username: "o6mAFw",
-                password: "etjUCn"
+                username: "VjGidAA7",
+                password: "gBgydNLu"
             }
         };
     }
